@@ -1,7 +1,7 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from .database import engine, Base
-from .routers import auth
+from .routers import auth, applications
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -12,3 +12,4 @@ async def lifespan(app: FastAPI):
 app = FastAPI(title="Job Tracker API", lifespan=lifespan)
 
 app.include_router(auth.router)
+app.include_router(applications.router)
