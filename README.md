@@ -81,16 +81,16 @@ DELETE /applications/{id}    Delete an application
 
 ### Backend
 ```
-fastapi
-uvicorn[standard]
-sqlalchemy[asyncio]
-asyncpg
-pydantic[email]
+fastapi                     # Web framework
+uvicorn[standard]           # Web server
+sqlalchemy[asyncio]         # Object-Relational Mapping
+asyncpg                     # PostgreSQL async driver
+pydantic[email]             # Data validation
 python-jose[cryptography]   # JWT
 passlib[bcrypt]             # Password hashing
 bcrypt=3.2.2                # Specific version for compatibility
 apscheduler                 # Follow-up date background job
-python-multipart
+python-multipart            # Required for parsing application/x-www-form-urlencoded request bodies
 ```
 
 ---
