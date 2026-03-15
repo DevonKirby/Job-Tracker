@@ -66,6 +66,23 @@ PUT    /applications/{id}    Update an application
 DELETE /applications/{id}    Delete an application
 ```
 
+### Dashboard
+```
+GET    /dashboard/stats      Returns aggregate stats:
+                             - total applications
+                             - applications by status
+                             - response rate
+                             - interview conversion rate
+                             - applications per week (last 8 weeks)
+```
+
+### Notifications
+```
+GET    /notifications        List unread notifications for current user
+PUT    /notifications/{id}/read   Mark a notification as read
+DELETE /notifications/clear  Clear all notifications
+```
+
 ---
 
 ## Authentication Flow
