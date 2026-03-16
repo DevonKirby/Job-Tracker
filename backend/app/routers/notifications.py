@@ -23,7 +23,7 @@ async def list_notifications(
         )
         .order_by(Notification.created_at.desc())
     )
-    return result.scalar().all()
+    return result.scalars().all()
 
 @router.put("/{notification_id}/read", response_model=NotificationOut)
 async def mark_as_read(
