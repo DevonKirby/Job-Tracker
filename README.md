@@ -6,6 +6,7 @@
 |---|---|
 | Backend | FastAPI (Python) |
 | Database | PostgreSQL |
+| Real-time | WebSockets (via FastAPI) |
 | Auth | JWT (OAuth2 password flow) |
 
 ---
@@ -83,6 +84,19 @@ PUT    /notifications/{id}/read     Mark a notification as read
 DELETE /notifications/clear         Clear all notifications
 ```
 
+### WebSockets
+```
+WS     /ws/{user_id}         Real-time notification stream for a user
+```
+
+---
+
+## Real-Time Behavior
+
+- Backend checks daily for applications where `follow_up_date == today`
+- When a follow-up is due, backend pushes a notification message over WebSocket
+- Notifications persist in the database and are retrievable via REST if the user was offline
+
 ---
 
 ## Authentication Flow
@@ -91,6 +105,7 @@ DELETE /notifications/clear         Clear all notifications
 2. Backend returns a JWT access token
 3. Frontend stores token in memory (not localStorage)
 4. All protected API requests include `Authorization: Bearer <token>` header
+5. WebSocket connection authenticates via token passed as a query parameter
 
 ---
 
