@@ -42,23 +42,24 @@ export default function Dashboard() {
 
   function fillWeeklyData(weeklyCounts) {
     const today = new Date()
-    const dayOfWeek = today.getDay() === 0 ? 6 : today.getDay() - 1
 
+    const dayOfWeek = today.getUTCDay() === 0 ? 6 : today.getUTCDay() - 1
     const currentWeekStart = new Date(today)
-    currentWeekStart.setDate(today.getDate() - dayOfWeek)
+    currentWeekStart.setUTCDate(today.getUTCDate() - dayOfWeek)
+    currentWeekStart.setUTCHours(0, 0, 0, 0)
 
     const start = new Date(currentWeekStart)
-    start.setDate(currentWeekStart.getDate() - 7 * 7)
+    start.setUTCDate(currentWeekStart.getUTCDate() - 7 * 7)
 
     const dataMap = Object.fromEntries(weeklyCounts.map(w => [w.week_start, w.count]))
 
     const result = []
-    let current = start
+    let current = new Date(start)
     while (current <= currentWeekStart) {
       const key = current.toISOString().split('T')[0]
       result.push({ week_start: key, count: dataMap[key] ?? 0 })
       const next = new Date(current)
-      next.setDate(current.getDate() + 7)
+      next.setUTCDate(current.getUTCDate() + 7)
       current = next
     }
 
