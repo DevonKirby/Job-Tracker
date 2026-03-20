@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts'
 import api from '../api/client'
 import Layout from '../components/Layout'
@@ -40,12 +41,18 @@ function fillWeeklyData(weeklyCounts) {
 
 export default function Dashboard() {
   const [stats, setStats] = useState(null)
+  const [recentApplication, setRecentApplication] = useState(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    api.get('/dashboard/stats')
-      .then((res) => setStats(res.data))
-      .finally(() => setLoading(false))
+    Promise.all([
+      api.get('/dashboard/stats'),
+      api.get('/applications'),
+    ]).then(([statsRes, appsRes]) => {
+      setStats(statsRes.data)
+      const sorted = appsRes.data.sort((a, b) => new Date(b.date_applied) - new Date(a.date_applied))
+      setRecentApplication(sorted[0] ?? null)
+    }).finally(() => setLoading(false))
   }, [])
 
   if (loading) return (
@@ -82,6 +89,34 @@ export default function Dashboard() {
           </div>
         </div>
 
+        {/* Most recent application */}
+        {recentApplication && (
+          <div className="bg-gray-900 rounded-2xl border border-gray-700 p-6">
+            <h2 className="text-lg font-semibold text-gray-100 mb-4">Most Recent Application</h2>
+            <Link
+              to={`/applications/${recentApplication.id}`}
+              className="flex items-start justify-between gap-4 hover:opacity-80 transition-opacity"
+            >
+              <div>
+                <p className="font-semibold text-gray-100">{recentApplication.company}</p>
+                <p className="text-sm text-gray-400">{recentApplication.role}</p>
+                {recentApplication.location && (
+                  <p className="text-sm text-gray-500">{recentApplication.location}</p>
+                )}
+              </div>
+              <div className="flex flex-col items-end gap-2 shrink-0">
+                <span className={`px-2 py-1 rounded-full text-xs font-medium ${statusColors[recentApplication.status]}`}>
+                  {recentApplication.status.replace('_', ' ')}
+                </span>
+                <span className="text-xs text-gray-500">{recentApplication.date_applied}</span>
+                {recentApplication.follow_up_date && (
+                  <span className="text-xs text-lime-500">Follow-up: {recentApplication.follow_up_date}</span>
+                )}
+              </div>
+            </Link>
+          </div>
+        )}
+
         {/* Weekly chart */}
         <div className="bg-gray-900 rounded-2xl border border-gray-700 p-6">
           <h2 className="text-lg font-semibold text-gray-100 mb-4">Applications per Week</h2>
@@ -93,6 +128,7 @@ export default function Dashboard() {
                 contentStyle={{ backgroundColor: '#111827', border: '1px solid #374151', borderRadius: '8px' }}
                 labelStyle={{ color: '#f3f4f6' }}
                 itemStyle={{ color: '#84cc16' }}
+                cursor={{ fill: 'rgba(255,255,255,0.05)' }}
               />
               <Bar dataKey="count" fill="#84cc16" radius={[4, 4, 0, 0]} />
             </BarChart>
