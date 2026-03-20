@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import api from '../api/client'
+import Layout from '../components/Layout'
 
 const STATUSES = ['ALL', 'APPLIED', 'PHONE_SCREEN', 'INTERVIEW', 'OFFER', 'REJECTED', 'WITHDRAWN']
 
@@ -40,24 +41,17 @@ export default function Applications() {
   )
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white border-b border-gray-200 px-4 py-4">
-        <div className="max-w-5xl mx-auto flex items-center justify-between">
-          <h1 className="text-xl font-bold text-gray-900">Applications</h1>
-          <div className="flex items-center gap-4">
-            <Link to="/" className="text-sm text-blue-600 hover:underline">Dashboard</Link>
-            <button
-              onClick={() => navigate('/applications/new')}
-              className="bg-blue-600 text-white text-sm px-4 py-2 rounded-lg hover:bg-blue-700"
-            >
-              + Add Application
-            </button>
-          </div>
-        </div>
-      </header>
+    <Layout>
+      <div className="max-w-5xl mx-auto px-4 py-8 space-y-4">
 
-      <main className="max-w-5xl mx-auto px-4 py-8 space-y-4">
+        <div className="flex justify-end">
+          <button
+            onClick={() => navigate('/applications/new')}
+            className="bg-blue-600 text-white text-sm px-4 py-2 rounded-lg hover:bg-blue-700"
+          >
+            + Add Application
+          </button>
+        </div>
 
         {/* Filters and sort */}
         <div className="flex flex-col sm:flex-row gap-3 justify-between">
@@ -66,17 +60,15 @@ export default function Applications() {
               <button
                 key={s}
                 onClick={() => setFilter(s)}
-                className={`px-3 py-1 rounded-full text-sm font-medium border transition-colors ${
-                  filter === s
+                className={`px-3 py-1 rounded-full text-sm font-medium border transition-colors ${filter === s
                     ? 'bg-blue-600 text-white border-blue-600'
                     : 'bg-white text-gray-600 border-gray-300 hover:border-blue-400'
-                }`}
+                  }`}
               >
                 {s.replace('_', ' ')}
               </button>
             ))}
           </div>
-
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value)}
@@ -121,7 +113,7 @@ export default function Applications() {
             ))}
           </div>
         )}
-      </main>
-    </div>
+      </div>
+    </Layout>
   )
 }

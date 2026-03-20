@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import api from '../api/client'
+import Layout from '../components/Layout'
 
 const STATUSES = ['APPLIED', 'PHONE_SCREEN', 'INTERVIEW', 'OFFER', 'REJECTED', 'WITHDRAWN']
-
 const PIPELINE = ['APPLIED', 'PHONE_SCREEN', 'INTERVIEW', 'OFFER']
 
 const statusColors = {
@@ -97,10 +97,10 @@ export default function ApplicationDetail() {
   const pipelineIndex = PIPELINE.indexOf(form.status)
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white border-b border-gray-200 px-4 py-4">
-        <div className="max-w-2xl mx-auto flex items-center justify-between">
+    <Layout>
+      <div className="max-w-2xl mx-auto px-4 py-8 space-y-6">
+
+        <div className="flex justify-between items-center">
           <Link to="/applications" className="text-sm text-blue-600 hover:underline">
             ← Applications
           </Link>
@@ -113,9 +113,6 @@ export default function ApplicationDetail() {
             </button>
           )}
         </div>
-      </header>
-
-      <main className="max-w-2xl mx-auto px-4 py-8 space-y-6">
 
         {/* Pipeline indicator */}
         {!isNew && (
@@ -203,8 +200,8 @@ export default function ApplicationDetail() {
             </button>
           </form>
         </div>
-      </main>
-    </div>
+      </div>
+    </Layout>
   )
 }
 
