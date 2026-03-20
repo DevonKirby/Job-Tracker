@@ -4,12 +4,12 @@ import api from '../api/client'
 import Layout from '../components/Layout'
 
 const statusColors = {
-  APPLIED: 'bg-blue-100 text-blue-700',
-  PHONE_SCREEN: 'bg-yellow-100 text-yellow-700',
-  INTERVIEW: 'bg-purple-100 text-purple-700',
-  OFFER: 'bg-green-100 text-green-700',
-  REJECTED: 'bg-red-100 text-red-700',
-  WITHDRAWN: 'bg-gray-100 text-gray-700',
+  APPLIED: 'bg-blue-900/50 text-blue-400',
+  PHONE_SCREEN: 'bg-yellow-900/50 text-yellow-400',
+  INTERVIEW: 'bg-purple-900/50 text-purple-400',
+  OFFER: 'bg-lime-900/50 text-lime-500',
+  REJECTED: 'bg-red-900/50 text-red-400',
+  WITHDRAWN: 'bg-gray-800 text-gray-500',
 }
 
 function fillWeeklyData(weeklyCounts) {
@@ -49,7 +49,9 @@ export default function Dashboard() {
   }, [])
 
   if (loading) return (
-    <div className="flex items-center justify-center h-screen">Loading...</div>
+    <div className="flex items-center justify-center h-screen bg-gray-950">
+      <p className="text-gray-400">Loading...</p>
+    </div>
   )
 
   return (
@@ -69,8 +71,8 @@ export default function Dashboard() {
         </div>
 
         {/* Status breakdown */}
-        <div className="bg-white rounded-2xl shadow p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">By Status</h2>
+        <div className="bg-gray-900 rounded-2xl border border-gray-700 p-6">
+          <h2 className="text-lg font-semibold text-gray-100 mb-4">By Status</h2>
           <div className="flex flex-wrap gap-2">
             {stats.by_status.map((s) => (
               <span key={s.status} className={`px-3 py-1 rounded-full text-sm font-medium ${statusColors[s.status]}`}>
@@ -81,14 +83,18 @@ export default function Dashboard() {
         </div>
 
         {/* Weekly chart */}
-        <div className="bg-white rounded-2xl shadow p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Applications per Week</h2>
+        <div className="bg-gray-900 rounded-2xl border border-gray-700 p-6">
+          <h2 className="text-lg font-semibold text-gray-100 mb-4">Applications per Week</h2>
           <ResponsiveContainer width="100%" height={200}>
             <BarChart data={fillWeeklyData(stats.weekly_counts)}>
-              <XAxis dataKey="week_start" tick={{ fontSize: 12 }} />
-              <YAxis allowDecimals={false} tick={{ fontSize: 12 }} />
-              <Tooltip />
-              <Bar dataKey="count" fill="#3b82f6" radius={[4, 4, 0, 0]} />
+              <XAxis dataKey="week_start" tick={{ fontSize: 12, fill: '#9ca3af' }} />
+              <YAxis allowDecimals={false} tick={{ fontSize: 12, fill: '#9ca3af' }} />
+              <Tooltip
+                contentStyle={{ backgroundColor: '#111827', border: '1px solid #374151', borderRadius: '8px' }}
+                labelStyle={{ color: '#f3f4f6' }}
+                itemStyle={{ color: '#84cc16' }}
+              />
+              <Bar dataKey="count" fill="#84cc16" radius={[4, 4, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>
@@ -100,9 +106,9 @@ export default function Dashboard() {
 
 function StatCard({ label, value }) {
   return (
-    <div className="bg-white rounded-2xl shadow p-5">
-      <p className="text-sm text-gray-500">{label}</p>
-      <p className="text-3xl font-bold text-gray-900 mt-1">{value}</p>
+    <div className="bg-gray-900 rounded-2xl border border-gray-700 p-5">
+      <p className="text-sm text-gray-400">{label}</p>
+      <p className="text-3xl font-bold text-lime-500 mt-1">{value}</p>
     </div>
   )
 }

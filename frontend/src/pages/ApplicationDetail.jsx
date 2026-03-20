@@ -10,9 +10,9 @@ const statusColors = {
   APPLIED: 'bg-blue-500',
   PHONE_SCREEN: 'bg-yellow-500',
   INTERVIEW: 'bg-purple-500',
-  OFFER: 'bg-green-500',
+  OFFER: 'bg-lime-500',
   REJECTED: 'bg-red-500',
-  WITHDRAWN: 'bg-gray-400',
+  WITHDRAWN: 'bg-gray-600',
 }
 
 export default function ApplicationDetail() {
@@ -91,7 +91,9 @@ export default function ApplicationDetail() {
   }
 
   if (loading) return (
-    <div className="flex items-center justify-center h-screen">Loading...</div>
+    <div className="flex items-center justify-center h-screen bg-gray-950">
+      <p className="text-gray-400">Loading...</p>
+    </div>
   )
 
   const pipelineIndex = PIPELINE.indexOf(form.status)
@@ -101,13 +103,13 @@ export default function ApplicationDetail() {
       <div className="max-w-2xl mx-auto px-4 py-8 space-y-6">
 
         <div className="flex justify-between items-center">
-          <Link to="/applications" className="text-sm text-blue-600 hover:underline">
+          <Link to="/applications" className="text-sm text-lime-500 hover:text-lime-400">
             ← Applications
           </Link>
           {!isNew && (
             <button
               onClick={handleDelete}
-              className="text-sm text-red-500 hover:text-red-700"
+              className="text-sm text-red-500 hover:text-red-400"
             >
               Delete
             </button>
@@ -116,8 +118,8 @@ export default function ApplicationDetail() {
 
         {/* Pipeline indicator */}
         {!isNew && (
-          <div className="bg-white rounded-2xl shadow p-6">
-            <h2 className="text-sm font-medium text-gray-500 mb-4">Pipeline</h2>
+          <div className="bg-gray-900 rounded-2xl border border-gray-700 p-6">
+            <h2 className="text-sm font-medium text-gray-400 mb-4">Pipeline</h2>
             <div className="flex items-center gap-2">
               {PIPELINE.map((stage, i) => (
                 <div key={stage} className="flex items-center gap-2 flex-1">
@@ -125,9 +127,9 @@ export default function ApplicationDetail() {
                     <div className={`w-full h-2 rounded-full ${
                       i <= pipelineIndex && pipelineIndex !== -1
                         ? statusColors[form.status]
-                        : 'bg-gray-200'
+                        : 'bg-gray-700'
                     }`} />
-                    <span className="text-xs text-gray-400 mt-1 text-center">
+                    <span className="text-xs text-gray-500 mt-1 text-center">
                       {stage.replace('_', ' ')}
                     </span>
                   </div>
@@ -136,7 +138,7 @@ export default function ApplicationDetail() {
             </div>
             {(form.status === 'REJECTED' || form.status === 'WITHDRAWN') && (
               <p className={`text-sm mt-3 font-medium ${
-                form.status === 'REJECTED' ? 'text-red-500' : 'text-gray-400'
+                form.status === 'REJECTED' ? 'text-red-500' : 'text-gray-500'
               }`}>
                 {form.status}
               </p>
@@ -145,13 +147,13 @@ export default function ApplicationDetail() {
         )}
 
         {/* Form */}
-        <div className="bg-white rounded-2xl shadow p-6">
-          <h1 className="text-lg font-bold text-gray-900 mb-6">
+        <div className="bg-gray-900 rounded-2xl border border-gray-700 p-6">
+          <h1 className="text-lg font-bold text-gray-100 mb-6">
             {isNew ? 'New Application' : 'Edit Application'}
           </h1>
 
           {error && (
-            <div className="bg-red-50 text-red-600 text-sm rounded-lg p-3 mb-4">
+            <div className="bg-red-900/40 text-red-400 text-sm rounded-lg p-3 mb-4 border border-red-800">
               {error}
             </div>
           )}
@@ -167,12 +169,12 @@ export default function ApplicationDetail() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
+              <label className="block text-sm font-medium text-gray-400 mb-1">Status</label>
               <select
                 name="status"
                 value={form.status}
                 onChange={handleChange}
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full bg-gray-800 border border-gray-600 rounded-lg px-3 py-2 text-sm text-gray-100 focus:outline-none focus:ring-2 focus:ring-lime-500"
               >
                 {STATUSES.map((s) => (
                   <option key={s} value={s}>{s.replace('_', ' ')}</option>
@@ -181,20 +183,20 @@ export default function ApplicationDetail() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Notes</label>
+              <label className="block text-sm font-medium text-gray-400 mb-1">Notes</label>
               <textarea
                 name="notes"
                 value={form.notes}
                 onChange={handleChange}
                 rows={4}
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full bg-gray-800 border border-gray-600 rounded-lg px-3 py-2 text-sm text-gray-100 focus:outline-none focus:ring-2 focus:ring-lime-500"
               />
             </div>
 
             <button
               type="submit"
               disabled={saving}
-              className="w-full bg-blue-600 text-white rounded-lg py-2 text-sm font-medium hover:bg-blue-700 disabled:opacity-50"
+              className="w-full bg-lime-500 text-gray-950 rounded-lg py-2 text-sm font-bold hover:bg-lime-400 disabled:opacity-50"
             >
               {saving ? 'Saving...' : isNew ? 'Create Application' : 'Save Changes'}
             </button>
@@ -208,14 +210,14 @@ export default function ApplicationDetail() {
 function Field({ label, name, value, onChange, type = 'text', required }) {
   return (
     <div>
-      <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
+      <label className="block text-sm font-medium text-gray-400 mb-1">{label}</label>
       <input
         type={type}
         name={name}
         value={value}
         onChange={onChange}
         required={required}
-        className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className="w-full bg-gray-800 border border-gray-600 rounded-lg px-3 py-2 text-sm text-gray-100 focus:outline-none focus:ring-2 focus:ring-lime-500"
       />
     </div>
   )
