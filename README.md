@@ -8,6 +8,8 @@
 | Database | PostgreSQL |
 | Real-time | WebSockets (via FastAPI) |
 | Auth | JWT (OAuth2 password flow) |
+| Frontend | React (Vite) |
+| Styling | Tailwind CSS |
 
 ---
 
@@ -91,6 +93,33 @@ WS     /ws/{user_id}         Real-time notification stream for a user
 
 ---
 
+## Frontend Pages
+
+### Auth
+- `/login` — Email/password login form
+- `/register` — Registration form
+
+### Dashboard (`/`)
+- Summary cards: Total Applications, Active, Interviews, Offers
+- Response rate and interview conversion rate
+- Applications per week bar chart (last 8 weeks)
+- Real-time notification bell with unread count
+
+### Applications (`/applications`)
+- Table/card list of all applications
+- Filter by status
+- Sort by date applied, company, status
+- Add new application button
+
+### Application Detail (`/applications/:id`)
+- Full application details
+- Edit form
+- Status pipeline progress indicator
+- Notes field
+- Follow-up date with reminder indicator
+
+---
+
 ## Real-Time Behavior
 
 - Backend checks daily for applications where `follow_up_date == today`
@@ -123,6 +152,17 @@ passlib[bcrypt]             # Password hashing
 bcrypt=3.2.2                # Specific version for compatibility
 apscheduler                 # Follow-up date background job
 python-multipart            # Required for parsing application/x-www-form-urlencoded request bodies
+```
+
+### Frontend
+```
+react
+vite
+tailwindcss
+axios
+react-router-dom
+recharts                    # Dashboard charts
+react-hot-toast             # Toast notifications
 ```
 
 ---
