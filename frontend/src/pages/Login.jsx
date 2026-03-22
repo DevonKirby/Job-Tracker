@@ -27,8 +27,8 @@ export default function Login() {
   return (
     <div className="min-h-screen bg-gray-950 flex items-center justify-center p-4">
       <div className="bg-gray-900 rounded-2xl border border-gray-700 p-8 w-full max-w-md">
-        <h1 className="text-2xl font-bold text-gray-100 mb-2">Sign in</h1>
-        <p className="text-sm text-gray-400 mb-6">Welcome back to Job Tracker</p>
+        <h1 className="text-3xl font-bold text-lime-500 mb-1">Job Tracker</h1>
+        <p className="text-sm text-gray-500 mb-6">Sign in to your account</p>
 
         {error && (
           <div className="bg-red-900/40 text-red-400 text-sm rounded-lg p-3 mb-4 border border-red-800">
