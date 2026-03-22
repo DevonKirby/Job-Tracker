@@ -82,9 +82,13 @@ export default function Dashboard() {
           <h2 className="text-lg font-semibold text-gray-100 mb-4">By Status</h2>
           <div className="flex flex-wrap gap-2">
             {stats.by_status.map((s) => (
-              <span key={s.status} className={`px-3 py-1 rounded-full text-sm font-medium ${statusColors[s.status]}`}>
+              <Link
+                key={s.status}
+                to={`/applications?status=${s.status}`}
+                className={`px-3 py-1 rounded-full text-sm font-medium transition-opacity hover:opacity-75 ${statusColors[s.status]}`}
+              >
                 {s.status.replace('_', ' ')} — {s.count}
-              </span>
+              </Link>
             ))}
           </div>
         </div>

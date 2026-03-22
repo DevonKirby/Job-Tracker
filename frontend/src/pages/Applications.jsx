@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import api from '../api/client'
 import Layout from '../components/Layout'
 
@@ -16,8 +16,9 @@ const statusColors = {
 
 export default function Applications() {
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
   const [applications, setApplications] = useState([])
-  const [filter, setFilter] = useState('ALL')
+  const [filter, setFilter] = useState(searchParams.get('status') ?? 'ALL')
   const [sortBy, setSortBy] = useState('date_applied')
   const [loading, setLoading] = useState(true)
 
@@ -107,6 +108,17 @@ export default function Applications() {
                     <span className="text-xs text-gray-500">{app.date_applied}</span>
                     {app.follow_up_date && (
                       <span className="text-xs text-lime-500">Follow-up: {app.follow_up_date}</span>
+                    )}
+                    {app.url && (
+                      <a
+                        href={app.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        className="text-xs text-gray-400 border border-gray-600 rounded px-2 py-0.5 hover:border-lime-500 hover:text-lime-500 transition-colors"
+                      >
+                        View Posting ↗
+                      </a>
                     )}
                   </div>
                 </div>
